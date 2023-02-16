@@ -27,13 +27,15 @@ def add_pet():
 
     form = AddPetForm()
     if form.validate_on_submit():
-        name = form.name.data
-        species = form.species.data
-        photo_url = form.photo_url.data
-        age = form.age.data
-        notes = form.notes.data
 
-        pet = Pet(name=name, species=species, photo_url=photo_url, age=age, notes=notes)
+        data = {k:v for k,v in form.data.items() if k != "csrf_token"}
+        new_pet = Pet(**data)
+        # pet = Pet(name=form.name.data, 
+        #         species=form.species.data, 
+        #         photo_url=form.photo_url.data, 
+        #         age=form.age.data, 
+        #         notes=form.notes.data)
+        
         db.session.add(pet)
         db.session.commit()
         return redirect('/')
